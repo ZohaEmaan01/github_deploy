@@ -33,8 +33,11 @@ jobs:
         # Clone the pre-existing Hugging Face space
         git clone https://huggingface.co/spaces/z0haEmaan/iris-flower-predictor
         cd iris-flower-predictor
-        # Copy specific files (make sure not to copy the directory itself)
-        cp -r ../model.py ../requirements.txt .  # Copy files to the current directory
+        # Copy specific model files (e.g., train_model.py) into the space
+        cp ../train_model.py .
+        cp ../requirements.txt .
+        cp ../app.py .
+        # You can add more files if needed
         git add .
         git commit -m "Deploy model"
         git push

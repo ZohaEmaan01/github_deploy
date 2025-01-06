@@ -41,6 +41,8 @@ jobs:
         cp ../requirements.txt .
         cp ../app.py .
         # You can add more files if needed
+        # Set the remote URL with the token for authentication
+        git remote set-url origin https://$HF_TOKEN@huggingface.co/spaces/z0haEmaan/iris-flower-predictor
         git add .
         git commit -m "Deploy model"
         git push

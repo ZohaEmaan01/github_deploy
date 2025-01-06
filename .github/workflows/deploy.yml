@@ -30,7 +30,7 @@ jobs:
       run: |
         pip install huggingface_hub
         huggingface-cli login --token $HF_TOKEN
-        huggingface-cli repo create "z0haEmaan/iris-flower-predictor" --type space --yes  # Add --yes to avoid prompt
+        huggingface-cli repo create "z0haEmaan/iris-flower-predictor" --type space --yes  # Fixed repo name
         git clone https://huggingface.co/spaces/z0haEmaan/iris-flower-predictor
         cd iris-flower-predictor
         cp -r ../* .

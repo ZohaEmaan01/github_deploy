@@ -1,9 +1,10 @@
-name: Deploy ML Model to Hugging Face Spaces
+name: Deploy to Hugging Face Space
 
 on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
   deploy:
@@ -12,6 +13,8 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
+      with:
+        fetch-depth: 0  # Ensures all history is fetched so git operations work correctly
 
     - name: Set up Python
       uses: actions/setup-python@v2
@@ -23,28 +26,17 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Set up Hugging Face Token
+    - name: Set up Hugging Face Token for Authentication
       run: echo "HF_TOKEN=${{ secrets.HF_TOKEN }}" >> $GITHUB_ENV
 
     - name: Set up Git configuration
       run: |
         git config --global user.email "ze.zohaemaan@gmail.com"
         git config --global user.name "ZohaEmaan01"
-        git config --global credential.helper store  # Store credentials so that git can access Hugging Face
-        
-        # Configure Git to use the Hugging Face token for HTTPS authentication
-        echo "https://$HF_TOKEN:x-oauth-basic@huggingface.co" > ~/.git-credentials
 
-    - name: Deploy to Hugging Face Spaces
+    - name: Deploy to Hugging Face Space
       run: |
         pip install huggingface_hub
         huggingface-cli login --token $HF_TOKEN
-        # Clone the pre-existing Hugging Face space
-        git clone https://huggingface.co/spaces/z0haEmaan/iris-flower-predictor
-        cd iris-flower-predictor
-        # Copy necessary files from the root of your repository (excluding the 'iris-flower-predictor' directory itself)
-        shopt -s extglob
-        cp -r ../!(iris-flower-predictor)/* .  # Exclude the 'iris-flower-predictor' directory
-        git add .
-        git commit -m "Deploy model"
-        git push
+        git remote add space https://huggingface.co/spaces/z0haEmaan/iris-flower-predictor
+        git push --force https://huggingface.co/spaces/z0haEmaan/iris-flower-predictor main

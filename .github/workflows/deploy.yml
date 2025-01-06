@@ -38,15 +38,9 @@ jobs:
         # Clone the pre-existing Hugging Face space
         git clone https://huggingface.co/spaces/z0haEmaan/iris-flower-predictor
         cd iris-flower-predictor
-
-        # Ensure that no previous files are copied into the directory, but just the necessary files
-        # Avoid overwriting the space directory itself by copying only the relevant files from the parent folder
-        cp -r ../* ./  # This will copy everything from the root except the current repo directory
-
-        # Check if files were copied successfully
-        ls -al  # List files to verify
-
-        # Add, commit and push changes
+        # Copy only necessary files from the root of your repository (excluding the 'iris-flower-predictor' directory itself)
+        shopt -s extglob
+        cp -r ../!(iris-flower-predictor)/* .  # Exclude the 'iris-flower-predictor' directory
         git add .
         git commit -m "Deploy model"
         git push

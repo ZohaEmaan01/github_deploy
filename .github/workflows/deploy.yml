@@ -1,3 +1,5 @@
+name: Deploy ML Model to Hugging Face Spaces
+
 on:
   push:
     branches:
@@ -28,6 +30,10 @@ jobs:
       run: |
         git config --global user.email "ze.zohaemaan@gmail.com"
         git config --global user.name "ZohaEmaan01"
+        git config --global credential.helper store  # Store credentials so that git can access Hugging Face
+        
+        # Configure Git to use the Hugging Face token for HTTPS authentication
+        echo "https://$HF_TOKEN:x-oauth-basic@huggingface.co" > ~/.git-credentials
 
     - name: Deploy to Hugging Face Spaces
       run: |
@@ -36,13 +42,9 @@ jobs:
         # Clone the pre-existing Hugging Face space
         git clone https://huggingface.co/spaces/z0haEmaan/iris-flower-predictor
         cd iris-flower-predictor
-        # Enable extended globbing to exclude the current directory from copy
+        # Copy necessary files from the root of your repository (excluding the 'iris-flower-predictor' directory itself)
         shopt -s extglob
-        cp -r ../!(iris-flower-predictor)/* .  # Exclude the 'iris-flower-predictor' directory itself
-        # Check if files are copied correctly (optional)
-        ls -al
+        cp -r ../!(iris-flower-predictor)/* .  # Exclude the 'iris-flower-predictor' directory
         git add .
         git commit -m "Deploy model"
-        # Make sure the Hugging Face token is used for git authentication
-        git remote set-url origin https://$HF_TOKEN@huggingface.co/spaces/z0haEmaan/iris-flower-predictor
         git push

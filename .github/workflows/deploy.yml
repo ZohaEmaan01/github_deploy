@@ -33,6 +33,9 @@ jobs:
         # Clone the pre-existing Hugging Face space
         git clone https://huggingface.co/spaces/z0haEmaan/iris-flower-predictor
         cd iris-flower-predictor
+        # Set Git identity
+        git config --global user.email "youremail@example.com"
+        git config --global user.name "Your Name"
         # Copy specific model files (e.g., train_model.py) into the space
         cp ../train_model.py .
         cp ../requirements.txt .

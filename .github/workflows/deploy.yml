@@ -33,7 +33,8 @@ jobs:
         # Clone the pre-existing Hugging Face space
         git clone https://huggingface.co/spaces/z0haEmaan/iris-flower-predictor
         cd iris-flower-predictor
-        cp -r ../* .
+        # Copy only the necessary files from the root of your repository (excluding the `iris-flower-predictor` directory itself)
+        cp -r ../* .  # Copies all files except the current directory
         git add .
         git commit -m "Deploy model"
         git push

@@ -26,6 +26,11 @@ jobs:
     - name: Set up Hugging Face Token
       run: echo "HF_TOKEN=${{ secrets.HF_TOKEN }}" >> $GITHUB_ENV
 
+    - name: Set up Git configuration
+      run: |
+        git config --global user.email "ze.zohaemaan@gmail.com"
+        git config --global user.name "ZohaEmaan01"
+
     - name: Deploy to Hugging Face Spaces
       run: |
         pip install huggingface_hub
@@ -33,16 +38,7 @@ jobs:
         # Clone the pre-existing Hugging Face space
         git clone https://huggingface.co/spaces/z0haEmaan/iris-flower-predictor
         cd iris-flower-predictor
-        # Set Git identity
-        git config --global user.email "youremail@example.com"
-        git config --global user.name "Your Name"
-        # Copy specific model files (e.g., train_model.py) into the space
-        cp ../train_model.py .
-        cp ../requirements.txt .
-        cp ../app.py .
-        # You can add more files if needed
-        # Set the remote URL with the token for authentication
-        git remote set-url origin https://$HF_TOKEN@huggingface.co/spaces/z0haEmaan/iris-flower-predictor
+        cp -r ../* .
         git add .
         git commit -m "Deploy model"
         git push
